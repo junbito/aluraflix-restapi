@@ -1,5 +1,5 @@
 from restapi.models import Video, Category
-from restapi.serializers import VideoSerializer, CategorySerializer
+from restapi.serializers import VideoSerializer, CategorySerializer, CategoryVideoSerializer
 from rest_framework import generics
 from rest_framework.response import Response
 
@@ -42,3 +42,11 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         self.destroy(request, *args, **kwargs)
         return Response("Category successfully deleted.")
+
+
+class CategoryVideoDetail(generics.RetrieveAPIView):
+    """
+    Retrieve the videos of a category.
+    """    
+    queryset = Category.objects.all()
+    serializer_class = CategoryVideoSerializer
