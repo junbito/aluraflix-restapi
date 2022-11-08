@@ -6,10 +6,10 @@ from restapi.models import Video, Category
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = ['id', 'title', 'description', 'url', 'category']
+        fields = ['id', 'title', 'description', 'url', 'category_id']
 
 
-class CategorySerializer(serializers.ModelSerializer):    
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'title', 'color']
