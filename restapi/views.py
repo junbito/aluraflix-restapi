@@ -8,9 +8,18 @@ class VideoList(generics.ListCreateAPIView):
     """
     List all videos, or create a new video.
     """
-    queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
+    def get_queryset(self):
+        """
+        Optionally restricts the returned videos of a given category,
+        by filtering against a `search` query parameter in the URL.
+        """
+        queryset = Video.objects.all()
+        search = self.request.query_params.get('search')
+        if search is not None:
+            queryset = queryset.filter(title=search)
+        return queryset
 
 class VideoDetail(generics.RetrieveUpdateDestroyAPIView):
     """
