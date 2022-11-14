@@ -6,7 +6,6 @@
 env
 *asgi.py
 *admin.py
-*tests.py
 
 # Accept these files in the repository
 !.gitignore
