@@ -1,7 +1,9 @@
 from restapi.models import Video, Category
-from restapi.serializers import VideoSerializer, CategorySerializer, CategoryVideoSerializer
-from rest_framework import generics
+from restapi.serializers import VideoSerializer, CategorySerializer, CategoryVideoSerializer, UserSerializer
+from restapi.permissions import IsOwnerOrReadOnly
+from rest_framework import generics, permissions
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 
 
 class VideoList(generics.ListCreateAPIView):
@@ -9,7 +11,11 @@ class VideoList(generics.ListCreateAPIView):
     List all videos, or create a new video.
     """
     serializer_class = VideoSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+    
     def get_queryset(self):
         """
         Optionally restricts the returned videos of a given category,
@@ -21,12 +27,14 @@ class VideoList(generics.ListCreateAPIView):
             queryset = queryset.filter(title=search)
         return queryset
 
+
 class VideoDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update or delete a video.
     """
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def delete(self, request, *args, **kwargs):
         self.destroy(request, *args, **kwargs)
@@ -59,3 +67,19 @@ class CategoryVideoDetail(generics.RetrieveAPIView):
     """    
     queryset = Category.objects.all()
     serializer_class = CategoryVideoSerializer
+
+
+class UserList(generics.ListAPIView):
+    """
+    List all users.
+    """    
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    """
+    Retrieve a user.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

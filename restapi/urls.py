@@ -7,4 +7,6 @@ urlpatterns = [
     path('categories/', views.CategoryList.as_view(), name='category-list'),
     path('categories/<int:pk>/', views.CategoryDetail.as_view(), name='category-detail'),
     path('categories/<int:pk>/videos/', views.CategoryVideoDetail.as_view(), name='category-video-detail'),
+    path('users/', views.UserList.as_view(), name='user-list'),
+    path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
 ]
