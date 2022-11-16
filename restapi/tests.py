@@ -112,6 +112,8 @@ class CategoryListTests(APITestCase):
     request_url = reverse('category-list')
     
     def setUp(self):
+        self.user = User.objects.create()
+        self.client.force_authenticate(user=self.user)
         self.category = Category.objects.create(title='FREE', color='TEST color')
 
     def test_create_category(self):
@@ -139,6 +141,8 @@ class CategoryListTests(APITestCase):
 class CategoryDetailTests(APITestCase):
     
     def setUp(self):
+        self.user = User.objects.create()
+        self.client.force_authenticate(user=self.user)
         self.category = Category.objects.create(title='FREE', color='TEST color')
         self.request_url = reverse('category-detail', kwargs={'pk': self.category.pk})
     
@@ -187,6 +191,7 @@ class CategoryVideoDetailTests(APITestCase):
 
     def setUp(self):
         self.user = User.objects.create()
+        self.client.force_authenticate(user=self.user)
         self.category = Category.objects.create(title='FREE', color='TEST color')
         self.video1 = Video.objects.create(title='TEST title', description='TEST description', url='TEST url', owner=self.user)
         self.video2 = Video.objects.create(title='TEST title', description='TEST description', url='TEST url', owner=self.user)
@@ -206,6 +211,7 @@ class UserListTests(APITestCase):
     
     def setUp(self):
         self.user = User.objects.create()
+        self.client.force_authenticate(user=self.user)
     
     def test_list_users(self):
         """
@@ -221,6 +227,7 @@ class UserDetailTests(APITestCase):
     
     def setUp(self):
         self.user = User.objects.create()
+        self.client.force_authenticate(user=self.user)
         self.request_url = reverse('user-detail', kwargs={'pk': self.user.pk})
     
     def test_retrieve_user(self):
