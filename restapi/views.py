@@ -11,7 +11,7 @@ class VideoList(generics.ListCreateAPIView):
     List all videos, or create a new video.
     """
     serializer_class = VideoSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -34,7 +34,7 @@ class VideoDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
     def delete(self, request, *args, **kwargs):
         self.destroy(request, *args, **kwargs)
@@ -47,6 +47,7 @@ class CategoryList(generics.ListCreateAPIView):
     """    
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -55,6 +56,7 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
         self.destroy(request, *args, **kwargs)
@@ -67,6 +69,7 @@ class CategoryVideoDetail(generics.RetrieveAPIView):
     """    
     queryset = Category.objects.all()
     serializer_class = CategoryVideoSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class UserList(generics.ListAPIView):
@@ -75,6 +78,7 @@ class UserList(generics.ListAPIView):
     """    
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class UserDetail(generics.RetrieveAPIView):
@@ -83,3 +87,4 @@ class UserDetail(generics.RetrieveAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
